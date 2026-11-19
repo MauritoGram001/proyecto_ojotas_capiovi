@@ -1,0 +1,7 @@
+{
+  "created_date": "2026-11-19",
+  "kit_url": "https://github.com/wj-004/Kit-AI",
+  "kit_commit": "cd0fe95e6c5a6b592b7176d7f9c7cf1e492917b2",
+  "kit_version": "1.8.0",
+  "adaptations": "Adaptado exclusivamente a arquitectura MVC convencional de Laravel. Excluidas skills y directivas de Arquitectura Hexagonal y DDD. Skills conservadas: plan-maestro-desarrollo-sistema y manage-project-roadmap."
+}

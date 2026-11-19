@@ -1,0 +1,15 @@
+# Esquema compartido, versión 1
+
+[plan-schema.json](plan-schema.json) define campos, estados, capas y sintaxis de IDs. Lo carga el parser; el reporte y el visor consumen el mismo resultado validado. El índice del plan declara `<!-- plan-schema: 1 -->`. Un formato distinto requiere una adaptación explícita, no una interpretación silenciosa.
+
+Encabezado: `### [PENDIENTE] AREA-001 — Resultado verificable`. Las especificaciones son Markdown, admiten campos multilínea y subdirectorios; los ejemplos dentro de bloques de código no se cuentan como tareas. El plan debe tener índice y al menos una tarea. Todos los campos declarados en el JSON son obligatorios, no vacíos y sin duplicados. Las plantillas viven fuera de la carpeta de tareas.
+
+- Capa distingue SOLICITADO, PROPUESTO y EXCLUIDO; el estado mide avance. Solo SOLICITADO puede estar en curso, parcial o hecho. PROPUESTO conserva PENDIENTE hasta su autorización.
+- Dependencias contiene `ninguna` o IDs exactos en mayúsculas, separados por comas. Cada prerrequisito debe existir y el grafo no tiene ciclos ni autorreferencias. HECHO requiere todos sus prerrequisitos en HECHO.
+- Al tomar una tarea autorizada, reservarla inmediatamente con `roadmap.py claim ID --owner "identificador único del chat"`, antes de investigar o trabajar; el comando la guarda EN_CURSO con responsable e inicio reales. Si falta, crearla primero; al retomar una tarea PARCIAL, conservar el inicio original. Al cerrar o interrumpir, actualizar el plan y liberar con `roadmap.py release ID --owner "el mismo identificador"`. Responsable e inicio deben estar asignados en EN_CURSO, PARCIAL y HECHO. Fecha de inicio es ISO o `pendiente`; Última actualización es ISO y no precede al inicio. El parser comprueba el estado actual; sin un historial de transiciones no puede acreditar cuándo se empezó a implementar.
+- HECHO requiere evidencia sustantiva para sus criterios; el parser rechaza marcadores vacíos como `sin evidencia`, sin pretender verificar su verdad.
+- Evidencia actual admite imágenes con `![descripción](ruta)`, en cualquier estado. La ruta es relativa al archivo de la tarea y debe ser un archivo real dentro de la carpeta del plan: PNG, JPG, GIF o WebP de hasta 5 MB, con descripción. El parser rechaza las demás, incluidas las URL externas. El visor las muestra en el detalle de la tarea.
+- EXCLUIDO requiere capa EXCLUIDO, estado EXCLUIDO y una decisión `DEC-AAAA-MM-DD-NN` identificada en Fuente. La revisión debe comprobar su origen humano; un ID por sí solo no demuestra autorización.
+- Próximo paso explica qué falta o la condición de desbloqueo. En una tarea cerrada puede indicar `ninguno; tarea cerrada`. Mantener historia útil dentro de Evidencia actual.
+
+El campo Contratos y archivos previstos no obliga a diseñar una solución prematura. Criterios de aceptación expresa resultados; Invariantes contiene las reglas relevantes, o explica por qué una tarea documental no agrega invariantes de producto. No rellenar con supuestos para pasar el control.
