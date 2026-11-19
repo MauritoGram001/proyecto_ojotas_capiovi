@@ -6,7 +6,7 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 
 ## Tareas
 
-### [PENDIENTE] VIS-001 — Layout y navegación
+### [HECHO] VIS-001 — Layout y navegación
 
 - **Capa:** SOLICITADO
 - **Fuente:** DEC-2026-11-19-02, RNF 01, RNF 02, RNF 05, RNF 06
@@ -17,11 +17,11 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Invariantes:** Interfaz sencilla, legible, libre de sobrecarga visual y con foco en usabilidad móvil (RNF 06).
 - **Contratos y archivos previstos:** resources/views/layouts/app.blade.php, resources/views/components/navbar.blade.php
 - **Criterios de aceptación:** Layout responsivo verificado en resoluciones móviles y de escritorio; navegación rápida sin recargas pesadas; menú con accesos directos a las áreas principales sin submenús profundos.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
+- **Responsable:** mauricio-chat
+- **Fecha de inicio:** 2026-11-19
 - **Última actualización:** 2026-11-19
-- **Próximo paso:** Reclamar con roadmap.py claim VIS-001 cuando el usuario autorice el inicio de vistas.
-- **Evidencia actual:** Tarea pendiente de autorización.
+- **Próximo paso:** Tarea completada. Proceder con VIS-002 (Productos, precios y stock).
+- **Evidencia actual:** Layout principal implementado en resources/views/layouts/app.blade.php con Bootstrap 5.3.3 y Bootstrap Icons locales; barra de navegación responsiva con offcanvas en resources/views/components/navbar.blade.php; pantalla de inicio con accesos rápidos táctiles en resources/views/inicio.blade.php; rutas configuradas en routes/web.php; prueba automatizada tests/Feature/LayoutNavigationTest con 2 tests y 17 aserciones aprobadas.
 
 ### [PENDIENTE] VIS-002 — Productos, precios y stock
 
