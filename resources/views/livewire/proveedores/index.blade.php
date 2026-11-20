@@ -12,6 +12,8 @@
         </div>
     </div>
 
+    @include('livewire.proveedores._pestanas', ['activa' => 'directorio'])
+
     @if ($mensajeExito !== '')
         <div class="alert alert-success d-flex align-items-center mb-3" role="alert">
             <i class="bi bi-check-circle-fill fs-5 me-2"></i>

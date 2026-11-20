@@ -38,6 +38,10 @@ Route::get('/pedidos-mayoristas', function () {
 // Tarea VIS-003: Directorio de proveedores con datos de contacto
 Route::get('/proveedores', \App\Livewire\Proveedores\Index::class)->name('proveedores.index');
 
+// Tarea VIS-006: Seguimiento de pedidos a proveedores y circuito de mercadería defectuosa / cambios
+Route::get('/proveedores/pedidos', \App\Livewire\Proveedores\Pedidos::class)->name('proveedores.pedidos');
+Route::get('/proveedores/cambios', \App\Livewire\Proveedores\Cambios::class)->name('proveedores.cambios');
+
 Route::get('/informes', function () {
     return view('maquetas.informes');
 })->name('informes.index');

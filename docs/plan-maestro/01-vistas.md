@@ -91,7 +91,7 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Próximo paso:** Tarea completada. Proceder con VIS-006 (Pedidos a proveedores y cambios). Pendiente de verificación: ejecutar `php artisan test` y revisar las pantallas en navegador (escritorio y celular), porque este trabajo se hizo sin `vendor/` ni red.
 - **Evidencia actual:** Componente App\Livewire\CuentasCorrientes\Index con vista resources/views/livewire/cuentas-corrientes/index.blade.php en /cuentas-corrientes: totales a cobrar y a pagar, pestañas de clientes y proveedores, búsqueda, filtro de saldo pendiente, movimientos con saldo acumulado por cliente y compras pendientes por proveedor. Componente App\Livewire\Cobros\Formulario con vista resources/views/livewire/cobros/formulario.blade.php en /cobros/nuevo/{cliente?}: cobro combinado en efectivo, transferencia y cheque (solo medio e importe), elección de varias boletas e imputación de la más antigua a la más nueva con aviso de sobrante. Aviso de deuda previa informativo y sin bloqueo en App\Livewire\Ventas\Crear (resources/views/livewire/ventas/crear.blade.php). Datos ficticios compartidos en app/Services/CuentasEjemplo.php; maqueta placeholder retirada. Pruebas escritas en tests/Feature/CuentasCorrientesViewTest (10), CobrosFormularioTest (15) y VentasCrearViewTest (+3); sintaxis PHP validada con php -l, pero NO ejecutadas en este entorno.
 
-### [PENDIENTE] VIS-006 — Pedidos a proveedores y cambios
+### [HECHO] VIS-006 — Pedidos a proveedores y cambios
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 11, RF 12, DEC-2026-11-19-05
@@ -102,11 +102,11 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Invariantes:** Claridad en el estado del pedido y coherencia con el circuito de cambio de mercadería fallada.
 - **Contratos y archivos previstos:** resources/views/livewire/proveedores/pedidos.blade.php, resources/views/livewire/proveedores/cambios.blade.php
 - **Criterios de aceptación:** Vistas interactivas con listado de pedidos y formulario de registro de mercadería defectuosa; estados visibles mediante insignias de texto claras.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
-- **Última actualización:** 2026-11-19
-- **Próximo paso:** Completar VIS-001 y ejecutar claim VIS-006.
-- **Evidencia actual:** Tarea pendiente de autorización.
+- **Responsable:** claude-chat-013LqGboPy5Tkw
+- **Fecha de inicio:** 2026-11-20
+- **Última actualización:** 2026-11-20
+- **Próximo paso:** Tarea completada. Proceder con VIS-007 (Pedidos mayoristas). Pendiente de verificación: ejecutar `php artisan test` y revisar las pantallas en navegador (escritorio y celular), porque este trabajo se hizo sin `vendor/` ni red.
+- **Evidencia actual:** Componente App\Livewire\Proveedores\Pedidos con vista resources/views/livewire/proveedores/pedidos.blade.php en /proveedores/pedidos: resumen por estado, insignias de texto Pendiente y Recibido, búsqueda por número o modelo, filtros por estado y proveedor, detalle de productos y marcado simulado como recibido sin tocar el stock. Componente App\Livewire\Proveedores\Cambios con vista resources/views/livewire/proveedores/cambios.blade.php en /proveedores/cambios: formulario de registro de mercadería defectuosa con validaciones y circuito Stock defectuoso, Enviada a cambio y Reemplazo recibido, que respeta el orden de los pasos y no suma al stock vendible. Pestañas compartidas (resources/views/livewire/proveedores/_pestanas.blade.php) también en el directorio de proveedores. Datos ficticios en app/Services/AbastecimientoEjemplo.php. Pruebas escritas en tests/Feature/PedidosProveedoresViewTest (10) y CambiosProveedoresViewTest (10); sintaxis PHP validada con php -l, pero NO ejecutadas en este entorno.
 
 ### [PENDIENTE] VIS-007 — Pedidos mayoristas
 
