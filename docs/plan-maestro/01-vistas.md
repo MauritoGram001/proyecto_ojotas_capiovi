@@ -23,7 +23,7 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Próximo paso:** Tarea completada. Proceder con VIS-002 (Productos, precios y stock).
 - **Evidencia actual:** Layout principal implementado en resources/views/layouts/app.blade.php con Bootstrap 5.3.3 y Bootstrap Icons locales; barra de navegación responsiva con offcanvas en resources/views/components/navbar.blade.php; pantalla de inicio con accesos rápidos táctiles en resources/views/inicio.blade.php; rutas configuradas en routes/web.php; prueba automatizada tests/Feature/LayoutNavigationTest con 2 tests y 17 aserciones aprobadas.
 
-### [PENDIENTE] VIS-002 — Productos, precios y stock
+### [HECHO] VIS-002 — Productos, precios y stock
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 02, RF 04, RF 05, RF 13, RF 18, DEC-2026-11-19-05
@@ -34,11 +34,11 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Invariantes:** Mostrar únicamente columnas esenciales en la tabla y llevar detalles al expandir o modal; indicar claramente la condición de bajo stock.
 - **Contratos y archivos previstos:** resources/views/livewire/productos/index.blade.php, resources/views/livewire/productos/formulario.blade.php
 - **Criterios de aceptación:** Vistas interactivas con datos ficticios que permitan filtrar por modelo, talle y color; visualización clara de precios minorista y mayorista; alertas de bajo stock visibles cuando el stock simulado sea menor a 10.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
+- **Responsable:** mauricio-chat
+- **Fecha de inicio:** 2026-11-19
 - **Última actualización:** 2026-11-19
-- **Próximo paso:** Completar VIS-001 y ejecutar claim VIS-002.
-- **Evidencia actual:** Tarea pendiente de autorización.
+- **Próximo paso:** Tarea completada. Proceder con VIS-003 (Clientes y proveedores).
+- **Evidencia actual:** Componente Livewire App\Livewire\Productos\Index implementado en app/Livewire/Productos/Index.php y resources/views/livewire/productos/index.blade.php; catálogo interactivo con calzado y textil, precios mayorista/minorista, grilla modal de variantes (talle y color) y distintivo de alerta de bajo stock (<10); prueba automatizada tests/Feature/ProductosViewTest con 4 tests y 14 aserciones aprobadas.
 
 ### [PENDIENTE] VIS-003 — Clientes y proveedores
 

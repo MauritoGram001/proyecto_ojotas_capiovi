@@ -17,9 +17,8 @@ Route::get('/plan-visor', function () {
 })->name('plan.visor');
 
 // Rutas de maqueta para las próximas tareas de la Fase B (VIS-002 a VIS-010)
-Route::get('/productos', function () {
-    return view('maquetas.productos');
-})->name('productos.index');
+// Tarea VIS-002: Catálogo de productos, variantes y existencias
+Route::get('/productos', \App\Livewire\Productos\Index::class)->name('productos.index');
 
 Route::get('/clientes', function () {
     return view('maquetas.clientes');
