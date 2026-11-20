@@ -66,6 +66,18 @@
                 </div>
             </div>
 
+            <!-- Aviso informativo de deuda previa: no bloquea la venta -->
+            @if ($deudaCliente)
+                <div class="alert alert-warning d-flex align-items-start mb-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+                    <div>
+                        <strong>Este cliente tiene {{ $deudaCliente['boletas'] }} boleta(s) pendiente(s) por {{ $dinero($deudaCliente['saldo']) }}.</strong>
+                        <div class="small">Es solo un aviso: podés continuar con la venta.</div>
+                        <a href="{{ route('cuentas.index') }}" class="small">Ver cuenta corriente</a>
+                    </div>
+                </div>
+            @endif
+
             <!-- Agregar producto por variante -->
             <div class="card p-3 mb-3 bg-white border-0 shadow-sm">
                 <label for="varianteSeleccionada" class="form-label fw-semibold mb-1">

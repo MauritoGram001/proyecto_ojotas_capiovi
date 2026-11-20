@@ -221,4 +221,33 @@ class VentasCrearViewTest extends TestCase
             ->assertSee('$30.000')
             ->assertSee('Precio cambiado a mano para esta venta');
     }
+
+    public function test_cliente_con_deuda_muestra_aviso_informativo(): void
+    {
+        Livewire::test(Crear::class)
+            ->set('clienteId', '3')
+            ->assertSee('tiene 2 boleta(s) pendiente(s) por $97.000')
+            ->assertSee('podés continuar con la venta');
+    }
+
+    public function test_sin_deuda_no_se_muestra_aviso(): void
+    {
+        Livewire::test(Crear::class)
+            ->assertDontSee('boleta(s) pendiente(s)')       // consumidor final
+            ->set('clienteId', '4')
+            ->assertDontSee('boleta(s) pendiente(s)')       // cliente al día
+            ->set('clienteId', '2')
+            ->assertDontSee('boleta(s) pendiente(s)');      // cliente sin cuenta
+    }
+
+    public function test_la_deuda_previa_no_bloquea_la_venta(): void
+    {
+        $componente = Livewire::test(Crear::class)->set('clienteId', '3');
+        $this->conLinea($componente, '101', 1);
+
+        $componente
+            ->call('confirmarVentaSimulada')
+            ->assertSee('simulada')
+            ->assertHasNoErrors();
+    }
 }

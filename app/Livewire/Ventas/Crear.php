@@ -3,6 +3,7 @@
 namespace App\Livewire\Ventas;
 
 use App\Livewire\Clientes\Index as ClientesIndex;
+use App\Services\CuentasEjemplo;
 use Livewire\Component;
 
 /**
@@ -263,6 +264,25 @@ class Crear extends Component
         return null;
     }
 
+    /**
+     * Deuda pendiente del cliente elegido, o null si no tiene (o es consumidor final).
+     * Es solo informativa: nunca bloquea la venta.
+     */
+    private function deudaCliente(): ?array
+    {
+        $cliente = $this->clienteSeleccionado();
+        if ($cliente === null) {
+            return null;
+        }
+
+        $cuenta = CuentasEjemplo::cuentaCliente($cliente['id']);
+        if ($cuenta === null || $cuenta['saldo'] <= 0) {
+            return null;
+        }
+
+        return ['saldo' => $cuenta['saldo'], 'boletas' => count($cuenta['pendientes'])];
+    }
+
     private function descuentoNormalizado(): float
     {
         $texto = str_replace(',', '.', trim($this->descuentoPct));
@@ -353,6 +373,7 @@ class Crear extends Component
             'resumen' => $this->resumen(),
             'comprobante' => $this->comprobante(),
             'clienteActual' => $this->clienteSeleccionado(),
+            'deudaCliente' => $this->deudaCliente(),
         ])->layout('layouts.app', ['title' => 'Nueva Venta']);
     }
 }

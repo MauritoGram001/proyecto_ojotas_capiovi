@@ -74,7 +74,7 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Próximo paso:** Tarea completada. Proceder con VIS-005 (Cuentas y pagos). Pendiente de verificación: ejecutar `php artisan test` y revisar la pantalla y la plantilla del comprobante en navegador (escritorio y celular), porque este trabajo se hizo sin `vendor/` ni red.
 - **Evidencia actual:** Componente Livewire App\Livewire\Ventas\Crear (app/Livewire/Ventas/Crear.php) con vista resources/views/livewire/ventas/crear.blade.php en la ruta /ventas/crear: selector de cliente o Consumidor final, lista de precios Minorista/Mayorista (sugerida según el tipo de cliente y modificable), alta de líneas por variante (modelo, talle y color), cantidad con botones táctiles, cambio manual de precio por línea con advertencia de que afecta solo a la operación en curso, descuento general en porcentaje, totales dinámicos y previsualización del comprobante interno no fiscal. Plantilla resources/views/pdf/comprobante-interno.blade.php (HTML simple compatible con DomPDF) servida por App\Http\Controllers\ComprobanteSimuladoController en /ventas/comprobante-simulado; el botón Descargar PDF (simulado) abre esa plantilla con la venta en curso. Maqueta placeholder retirada. Pruebas escritas en tests/Feature/VentasCrearViewTest (18 tests); sintaxis PHP validada con php -l, pero NO ejecutadas en este entorno.
 
-### [PENDIENTE] VIS-005 — Cuentas y pagos
+### [HECHO] VIS-005 — Cuentas y pagos
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 09, RF 14, RF 16, RF 20, RF 21, DEC-2026-11-19-05
@@ -85,11 +85,11 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Invariantes:** La advertencia de boleta pendiente no bloquea ni pide contraseña; muestra claramente que se puede continuar.
 - **Contratos y archivos previstos:** resources/views/livewire/cuentas-corrientes/index.blade.php, resources/views/livewire/cobros/formulario.blade.php
 - **Criterios de aceptación:** Pantalla de saldo y movimientos por cliente; modal/alerta informativa de deuda previa sin botones de bloqueo; formulario para desglosar pago en varios medios y aplicarlo a boletas seleccionadas.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
-- **Última actualización:** 2026-11-19
-- **Próximo paso:** Completar dependencias y ejecutar claim VIS-005.
-- **Evidencia actual:** Tarea pendiente de autorización.
+- **Responsable:** claude-chat-013LqGboPy5Tkw
+- **Fecha de inicio:** 2026-11-20
+- **Última actualización:** 2026-11-20
+- **Próximo paso:** Tarea completada. Proceder con VIS-006 (Pedidos a proveedores y cambios). Pendiente de verificación: ejecutar `php artisan test` y revisar las pantallas en navegador (escritorio y celular), porque este trabajo se hizo sin `vendor/` ni red.
+- **Evidencia actual:** Componente App\Livewire\CuentasCorrientes\Index con vista resources/views/livewire/cuentas-corrientes/index.blade.php en /cuentas-corrientes: totales a cobrar y a pagar, pestañas de clientes y proveedores, búsqueda, filtro de saldo pendiente, movimientos con saldo acumulado por cliente y compras pendientes por proveedor. Componente App\Livewire\Cobros\Formulario con vista resources/views/livewire/cobros/formulario.blade.php en /cobros/nuevo/{cliente?}: cobro combinado en efectivo, transferencia y cheque (solo medio e importe), elección de varias boletas e imputación de la más antigua a la más nueva con aviso de sobrante. Aviso de deuda previa informativo y sin bloqueo en App\Livewire\Ventas\Crear (resources/views/livewire/ventas/crear.blade.php). Datos ficticios compartidos en app/Services/CuentasEjemplo.php; maqueta placeholder retirada. Pruebas escritas en tests/Feature/CuentasCorrientesViewTest (10), CobrosFormularioTest (15) y VentasCrearViewTest (+3); sintaxis PHP validada con php -l, pero NO ejecutadas en este entorno.
 
 ### [PENDIENTE] VIS-006 — Pedidos a proveedores y cambios
 

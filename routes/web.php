@@ -27,9 +27,9 @@ Route::get('/clientes', \App\Livewire\Clientes\Index::class)->name('clientes.ind
 Route::get('/ventas/crear', \App\Livewire\Ventas\Crear::class)->name('ventas.crear');
 Route::get('/ventas/comprobante-simulado', \App\Http\Controllers\ComprobanteSimuladoController::class)->name('ventas.comprobante-simulado');
 
-Route::get('/cuentas-corrientes', function () {
-    return view('maquetas.cuentas-corrientes');
-})->name('cuentas.index');
+// Tarea VIS-005: Cuentas corrientes (clientes y proveedores) y cobro combinado con imputación a boletas
+Route::get('/cuentas-corrientes', \App\Livewire\CuentasCorrientes\Index::class)->name('cuentas.index');
+Route::get('/cobros/nuevo/{cliente?}', \App\Livewire\Cobros\Formulario::class)->name('cobros.crear');
 
 Route::get('/pedidos-mayoristas', function () {
     return view('maquetas.pedidos-mayoristas');
