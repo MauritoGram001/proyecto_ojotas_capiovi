@@ -40,7 +40,7 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Próximo paso:** Tarea completada. Proceder con VIS-003 (Clientes y proveedores).
 - **Evidencia actual:** Componente Livewire App\Livewire\Productos\Index implementado en app/Livewire/Productos/Index.php y resources/views/livewire/productos/index.blade.php; catálogo interactivo con calzado y textil, precios mayorista/minorista, grilla modal de variantes (talle y color) y distintivo de alerta de bajo stock (<10); prueba automatizada tests/Feature/ProductosViewTest con 4 tests y 14 aserciones aprobadas.
 
-### [PENDIENTE] VIS-003 — Clientes y proveedores
+### [HECHO] VIS-003 — Clientes y proveedores
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 01, RF 07, RNF 05
@@ -51,13 +51,13 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Invariantes:** Formularios compactos; campos adicionales solo cuando correspondan al tipo de cliente; etiquetas claras.
 - **Contratos y archivos previstos:** resources/views/livewire/clientes/index.blade.php, resources/views/livewire/proveedores/index.blade.php
 - **Criterios de aceptación:** Formulario de cliente que active el campo CUIT al seleccionar "Mayorista" y lo oculte en "Minorista"; listado claro con búsqueda por nombre o teléfono; vista de proveedores con datos esenciales de contacto.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
-- **Última actualización:** 2026-11-19
-- **Próximo paso:** Completar VIS-001 y ejecutar claim VIS-003.
-- **Evidencia actual:** Tarea pendiente de autorización.
+- **Responsable:** claude-chat-013LqGboPy5Tkw
+- **Fecha de inicio:** 2026-11-20
+- **Última actualización:** 2026-11-20
+- **Próximo paso:** Tarea completada. Proceder con VIS-004 (Ventas y comprobantes). Pendiente de verificación: ejecutar `php artisan test` y revisar las pantallas en navegador (escritorio y celular), porque este trabajo se hizo sin `vendor/` ni red.
+- **Evidencia actual:** Componentes Livewire App\Livewire\Clientes\Index (app/Livewire/Clientes/Index.php) y App\Livewire\Proveedores\Index (app/Livewire/Proveedores/Index.php) con vistas resources/views/livewire/clientes/index.blade.php y resources/views/livewire/proveedores/index.blade.php, rutas /clientes y /proveedores en routes/web.php (maquetas placeholder retiradas). Clientes: alta simulada con CUIT visible y obligatorio solo para Mayorista, búsqueda por nombre (sin tildes) o teléfono, filtro por tipo y selector de venta rápida con opción Consumidor final. Proveedores: listado con contacto, búsqueda y filtro por rubro, alta simulada. Pruebas escritas en tests/Feature/ClientesViewTest (12 tests) y tests/Feature/ProveedoresViewTest (7 tests); sintaxis PHP validada con php -l, pero NO ejecutadas en este entorno.
 
-### [PENDIENTE] VIS-004 — Ventas y comprobantes
+### [HECHO] VIS-004 — Ventas y comprobantes
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 03, RF 06, RF 18, RF 19, DEC-2026-11-19-05
@@ -68,11 +68,11 @@ Construcción de la interfaz de usuario con Bootstrap 5 y Livewire, priorizando 
 - **Invariantes:** Comprobantes no fiscales de carácter estrictamente interno; cambio manual de precio presentado con advertencia visual de que afecta solo la operación en curso.
 - **Contratos y archivos previstos:** resources/views/livewire/ventas/crear.blade.php, resources/views/pdf/comprobante-interno.blade.php
 - **Criterios de aceptación:** Interfaz ágil utilizable desde teléfonos móviles; cálculo dinámico de totales con descuentos; simulación del diseño de comprobante PDF interno con modelo, talle, color y precio cobrado.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
-- **Última actualización:** 2026-11-19
-- **Próximo paso:** Completar dependencias visuales y ejecutar claim VIS-004.
-- **Evidencia actual:** Tarea pendiente de autorización.
+- **Responsable:** claude-chat-013LqGboPy5Tkw
+- **Fecha de inicio:** 2026-11-20
+- **Última actualización:** 2026-11-20
+- **Próximo paso:** Tarea completada. Proceder con VIS-005 (Cuentas y pagos). Pendiente de verificación: ejecutar `php artisan test` y revisar la pantalla y la plantilla del comprobante en navegador (escritorio y celular), porque este trabajo se hizo sin `vendor/` ni red.
+- **Evidencia actual:** Componente Livewire App\Livewire\Ventas\Crear (app/Livewire/Ventas/Crear.php) con vista resources/views/livewire/ventas/crear.blade.php en la ruta /ventas/crear: selector de cliente o Consumidor final, lista de precios Minorista/Mayorista (sugerida según el tipo de cliente y modificable), alta de líneas por variante (modelo, talle y color), cantidad con botones táctiles, cambio manual de precio por línea con advertencia de que afecta solo a la operación en curso, descuento general en porcentaje, totales dinámicos y previsualización del comprobante interno no fiscal. Plantilla resources/views/pdf/comprobante-interno.blade.php (HTML simple compatible con DomPDF) servida por App\Http\Controllers\ComprobanteSimuladoController en /ventas/comprobante-simulado; el botón Descargar PDF (simulado) abre esa plantilla con la venta en curso. Maqueta placeholder retirada. Pruebas escritas en tests/Feature/VentasCrearViewTest (18 tests); sintaxis PHP validada con php -l, pero NO ejecutadas en este entorno.
 
 ### [PENDIENTE] VIS-005 — Cuentas y pagos
 

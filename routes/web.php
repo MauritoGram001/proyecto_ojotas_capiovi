@@ -20,13 +20,12 @@ Route::get('/plan-visor', function () {
 // Tarea VIS-002: Catálogo de productos, variantes y existencias
 Route::get('/productos', \App\Livewire\Productos\Index::class)->name('productos.index');
 
-Route::get('/clientes', function () {
-    return view('maquetas.clientes');
-})->name('clientes.index');
+// Tarea VIS-003: Directorio de clientes (CUIT condicional para mayoristas) y selector de venta rápida
+Route::get('/clientes', \App\Livewire\Clientes\Index::class)->name('clientes.index');
 
-Route::get('/ventas/crear', function () {
-    return view('maquetas.ventas-crear');
-})->name('ventas.crear');
+// Tarea VIS-004: Pantalla de venta (POS) y plantilla del comprobante interno no fiscal
+Route::get('/ventas/crear', \App\Livewire\Ventas\Crear::class)->name('ventas.crear');
+Route::get('/ventas/comprobante-simulado', \App\Http\Controllers\ComprobanteSimuladoController::class)->name('ventas.comprobante-simulado');
 
 Route::get('/cuentas-corrientes', function () {
     return view('maquetas.cuentas-corrientes');
@@ -36,9 +35,8 @@ Route::get('/pedidos-mayoristas', function () {
     return view('maquetas.pedidos-mayoristas');
 })->name('pedidos.index');
 
-Route::get('/proveedores', function () {
-    return view('maquetas.proveedores');
-})->name('proveedores.index');
+// Tarea VIS-003: Directorio de proveedores con datos de contacto
+Route::get('/proveedores', \App\Livewire\Proveedores\Index::class)->name('proveedores.index');
 
 Route::get('/informes', function () {
     return view('maquetas.informes');
