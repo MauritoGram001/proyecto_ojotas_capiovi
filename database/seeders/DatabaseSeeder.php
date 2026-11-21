@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DirectorioSeeder::class,
             CatalogoSeeder::class,
+            CuentaCorrienteSeeder::class,
         ]);
     }
 }

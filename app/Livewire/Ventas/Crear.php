@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Ventas;
 
+use App\Models\Boleta;
 use App\Models\Cliente;
+use App\Models\CuentaCorriente;
 use App\Models\Variante;
 use App\Models\Venta;
 use App\Models\VentaItem;
@@ -24,13 +26,6 @@ class Crear extends Component
     public string $numeroComprobante = 'INT-PREVIA';
     public ?int $ventaRegistradaId = null;
     public ?string $mensajeEstado = null;
-
-    // Deudas previas simuladas para la advertencia informativa no bloqueante (VIS-005)
-    public array $deudasPrevias = [
-        1 => 18500.0,
-        3 => 94500.0,
-        4 => 32000.0,
-    ];
 
     public function updatedCompradorId(): void
     {
@@ -55,6 +50,17 @@ class Crear extends Component
 
         $this->nombreComprador = $cliente->nombre;
         $this->modoPrecio = $cliente->tipo === Cliente::TIPO_MAYORISTA ? 'mayorista' : 'minorista';
+    }
+
+    public function getDeudaActualProperty(): float
+    {
+        if ($this->compradorId === 'final' || ! is_numeric($this->compradorId)) {
+            return 0.0;
+        }
+
+        $cliente = Cliente::with('cuentaCorriente')->find((int) $this->compradorId);
+
+        return $cliente ? $cliente->saldoCuentaCorriente() : 0.0;
     }
 
     public function updatedModoPrecio(): void
@@ -262,6 +268,35 @@ class Crear extends Component
 
                 $venta->numero = 'INT-'.str_pad((string) $venta->id, 4, '0', STR_PAD_LEFT);
                 $venta->save();
+
+                // FUN-005: venta a cliente identificado genera boleta pendiente y actualiza saldo.
+                if ($clienteId) {
+                    Boleta::query()->create([
+                        'numero' => Boleta::generarNumero(),
+                        'cliente_id' => $clienteId,
+                        'venta_id' => $venta->id,
+                        'concepto' => 'Venta '.$venta->numero,
+                        'monto' => round($total, 2),
+                        'saldo' => round($total, 2),
+                        'estado' => 'Pendiente',
+                        'fecha' => now()->toDateString(),
+                    ]);
+
+                    $cuenta = CuentaCorriente::query()
+                        ->where('cliente_id', $clienteId)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if ($cuenta) {
+                        $cuenta->saldo = round((float) $cuenta->saldo + round($total, 2), 2);
+                        $cuenta->save();
+                    } else {
+                        CuentaCorriente::query()->create([
+                            'cliente_id' => $clienteId,
+                            'saldo' => round($total, 2),
+                        ]);
+                    }
+                }
 
                 return $venta;
             });

@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use Database\Seeders\CatalogoSeeder;
+use Database\Seeders\CuentaCorrienteSeeder;
 use Database\Seeders\DirectorioSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -28,6 +29,7 @@ abstract class TestCase extends BaseTestCase
         $this->seed([
             DirectorioSeeder::class,
             CatalogoSeeder::class,
+            CuentaCorrienteSeeder::class,
         ]);
     }
 }

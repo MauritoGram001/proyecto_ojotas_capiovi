@@ -74,7 +74,7 @@ Desarrollo de la lógica de negocio, persistencia en base de datos MySQL, modelo
 - **Próximo paso:** Tarea completada. Continuar con FUN-005 (Cuenta corriente, boletas y cobros).
 - **Evidencia actual:** Registro transaccional de ventas minorista/mayorista implementado en `app/Livewire/Ventas/Crear.php` (confirmación con `DB::transaction`, bloqueo `lockForUpdate` de variantes en orden estable, descuento inmediato de stock, validación de stock insuficiente sin registrar ni descontar, soporte de comprador identificado o “Consumidor Final”). Persistencia en `app/Models/Venta.php` y `app/Models/VentaItem.php` con precio de lista, precio unitario y descuento efectivamente cobrados por ítem (sin alterar `productos`), totales y marca de precio modificado; migraciones `2026_11_20_120000_create_ventas_table.php` y `2026_11_20_120001_create_venta_items_table.php`. Comprobante interno no fiscal descargable en PDF (DomPDF) vía `GET /ventas/{venta}/comprobante` (`app/Http/Controllers/ComprobanteController.php`, `routes/web.php`, plantilla `resources/views/pdf/comprobante.blade.php`); vista POS `resources/views/livewire/ventas/crear.blade.php` actualizada para registrar, mostrar estado y descargar comprobante. `tests/Feature/VentasViewTest.php`: 14 passed (66 assertions) cubriendo carga del POS, precios minorista/mayorista, cambio manual no bloqueante, totales, registro con/sin cliente, descuento inmediato de stock, persistencia de precio/descuento sin alterar catálogo, rechazo por stock insuficiente sin efectos y descarga de PDF. Suite completa: `php artisan test` → 98 passed (489 assertions). `roadmap.py check` válido. Cambios locales sin commit ni push.
 
-### [EN_CURSO] FUN-005 — Cuenta corriente, boletas y cobros
+### [HECHO] FUN-005 — Cuenta corriente, boletas y cobros
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 09, RF 14, RF 20, RF 21, DEC-2026-11-19-05
@@ -88,10 +88,10 @@ Desarrollo de la lógica de negocio, persistencia en base de datos MySQL, modelo
 - **Responsable:** opencode-big-pickle-local
 - **Fecha de inicio:** 2026-11-20
 - **Última actualización:** 2026-11-20
-- **Próximo paso:** Completar dependencias y ejecutar claim FUN-005.
-- **Evidencia actual:** Tarea pendiente de ejecución.
+- **Próximo paso:** Tarea completada. Continuar con FUN-006 (Compras y deudas a proveedores).
+- **Evidencia actual:** Cuenta corriente y cobranzas implementadas con persistencia real: modelos `app/Models/Boleta.php`, `app/Models/Cobro.php`, `app/Models/CobroImputacion.php`, `app/Models/CuentaCorriente.php` (relaciones/saldos/estado de boleta `Pendiente|Parcial|Pagada` y numeración) y migraciones `database/migrations/2026_11_21_013717_create_cuentas_corrientes_table.php`, `2026_11_21_013707_create_boletas_table.php`, `2026_11_21_013711_create_cobros_table.php`, `2026_11_21_013714_create_cobro_imputacions_table.php` (tabla `cobro_imputaciones`); `app/Models/Cliente.php` y `app/Models/Venta.php` con relaciones/saldo. Ventas a cliente identificado (`app/Livewire/Ventas/Crear.php`, `resources/views/livewire/ventas/crear.blade.php`) generan boleta pendiente y actualizan saldo de cuenta corriente dentro de la transacción, con advertencia no bloqueante de deuda real. Gestión de saldos/movimientos y cobros en `app/Livewire/CuentasCorrientes/Index.php`, `app/Livewire/Cobros/Formulario.php` y vistas `resources/views/livewire/cuentas-corrientes/index.blade.php`, `resources/views/livewire/cobros/formulario.blade.php`: listado por cliente con saldo actualizado, boletas pendientes/movimientos, registro de cobro multimedio (efectivo, transferencia, cheque básico sin cartera con número de referencia) e imputación simultánea a múltiples boletas con validación de coincidencia total=imputado, pagos parciales y saldos remanentes consistentes (transaccional con bloqueo). Datos iniciales en `database/seeders/CuentaCorrienteSeeder.php` integrado a `DatabaseSeeder`/`tests/TestCase.php`. Pruebas: `tests/Feature/CuentasCorrientesViewTest.php`, `tests/Feature/CobrosFormularioTest.php`, `tests/Feature/VentasViewTest.php` actualizadas/extendidas (venta a cliente identificado genera boleta y actualiza saldo, advertencia no bloqueante, cobro combinado/parcial y validaciones). Verificación: `php artisan test --colors=never tests/Feature/CuentasCorrientesViewTest.php tests/Feature/CobrosFormularioTest.php tests/Feature/VentasViewTest.php` → 24 passed (116 assertions); `php artisan test --colors=never` → 100 passed (509 assertions). `roadmap.py check` válido. Cambios locales sin commit ni push.
 
-### [PENDIENTE] FUN-006 — Compras y deudas a proveedores
+### [EN_CURSO] FUN-006 — Compras y deudas a proveedores
 
 - **Capa:** SOLICITADO
 - **Fuente:** RF 11, RF 16, DEC-2026-11-19-05
@@ -102,9 +102,9 @@ Desarrollo de la lógica de negocio, persistencia en base de datos MySQL, modelo
 - **Invariantes:** El ingreso de mercadería debe ser atómico y no duplicar existencias ante reintentos; el estado de deuda con el proveedor se actualiza congruentemente con cada boleta y pago.
 - **Contratos y archivos previstos:** app/Models/Compra.php, app/Models/CompraItem.php, app/Models/PagoProveedor.php, database/migrations/*create_compras_table.php
 - **Criterios de aceptación:** Recepción de compras que incrementa stock de variantes correspondientes; registro de deuda con proveedor y pagos aplicados con saldos exactos comprobados.
-- **Responsable:** sin asignar
-- **Fecha de inicio:** pendiente
-- **Última actualización:** 2026-11-19
+- **Responsable:** opencode-big-pickle-local
+- **Fecha de inicio:** 2026-11-20
+- **Última actualización:** 2026-11-20
 - **Próximo paso:** Completar dependencias y ejecutar claim FUN-006.
 - **Evidencia actual:** Tarea pendiente de ejecución.
 

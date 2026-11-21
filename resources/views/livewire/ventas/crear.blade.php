@@ -69,11 +69,11 @@
                 </div>
 
                 <!-- Advertencia informativa NO bloqueante: no pide contraseña ni impide continuar -->
-                @if ($compradorId !== 'final' && isset($deudasPrevias[(int) $compradorId]))
+                @if ($compradorId !== 'final' && $this->deudaActual > 0)
                     <div class="alert alert-info small py-2 px-2 mb-3" role="status">
                         <i class="bi bi-info-circle-fill me-1"></i>
-                        El cliente tiene una boleta pendiente de
-                        <strong>${{ number_format($deudasPrevias[(int) $compradorId], 0, ',', '.') }}</strong>.
+                        El cliente tiene deuda pendiente de
+                        <strong>${{ number_format($this->deudaActual, 0, ',', '.') }}</strong>.
                         <strong>Podés continuar con la venta normalmente.</strong>
                     </div>
                 @endif

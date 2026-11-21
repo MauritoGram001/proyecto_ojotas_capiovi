@@ -3,10 +3,10 @@
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom">
         <div>
             <h1 class="h4 mb-0 fw-bold text-dark"><i class="bi bi-cash-stack text-primary me-2"></i> Cuentas Corrientes & Cobros</h1>
-            <small class="text-muted">Saldos de clientes, deudas con proveedores e imputación simulada de pagos.</small>
+            <small class="text-muted">Saldos de clientes, deudas con proveedores e imputación de pagos a boletas.</small>
         </div>
         <div class="mt-2 mt-md-0">
-            <button wire:click="abrirCobro" class="btn btn-primary btn-touch fw-semibold" @if ($tab !== 'clientes') disabled @endif>
+            <button wire:click="abrirCobro" class="btn btn-primary btn-touch fw-semibold" @if ($tab !== 'clientes' || ! $clienteSeleccionado) disabled @endif>
                 <i class="bi bi-cash-coin me-1"></i> Registrar Cobro
             </button>
         </div>
@@ -33,18 +33,21 @@
                 <div class="card border-0 shadow-sm p-3 h-100">
                     <h6 class="fw-bold text-secondary text-uppercase small mb-3">Clientes con cuenta</h6>
                     <div class="list-group list-group-flush">
-                        @foreach ($clientes as $cliente)
-                            <button wire:click="$set('clienteId', '{{ $cliente['id'] }}')" type="button"
-                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-2 py-3 {{ (string) $cliente['id'] === $clienteId ? 'active' : '' }}">
+                        @forelse ($clientes as $cliente)
+                            @php($saldo = $cliente->saldoCuentaCorriente())
+                            <button wire:click="$set('clienteId', '{{ $cliente->id }}')" type="button"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-2 py-3 {{ (string) $cliente->id === $clienteId ? 'active' : '' }}">
                                 <span>
-                                    <span class="fw-semibold d-block">{{ $cliente['nombre'] }}</span>
-                                    <small class="text-muted">{{ $cliente['telefono'] }}</small>
+                                    <span class="fw-semibold d-block">{{ $cliente->nombre }}</span>
+                                    <small class="{{ (string) $cliente->id === $clienteId ? 'text-white-50' : 'text-muted' }}">{{ $cliente->telefono }}</small>
                                 </span>
-                                <span class="badge {{ $cliente['saldo'] > 0 ? 'bg-warning text-dark' : 'bg-success' }} rounded-pill">
-                                    ${{ number_format($cliente['saldo'], 0, ',', '.') }}
+                                <span class="badge {{ $saldo > 0 ? 'bg-warning text-dark' : 'bg-success' }} rounded-pill">
+                                    ${{ number_format($saldo, 0, ',', '.') }}
                                 </span>
                             </button>
-                        @endforeach
+                        @empty
+                            <div class="text-muted small">No hay clientes registrados.</div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -55,19 +58,20 @@
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div>
                             <h6 class="fw-bold text-secondary text-uppercase small mb-1">Saldo actual</h6>
-                            <div class="fs-3 fw-bold text-dark">{{ $clienteSeleccionado['nombre'] ?? 'Consumidor Final' }}</div>
+                            <div class="fs-3 fw-bold text-dark">{{ $clienteSeleccionado?->nombre ?? 'Sin cliente' }}</div>
                         </div>
                         <div class="text-md-end mt-2 mt-md-0">
                             <div class="small text-muted">Deuda pendiente</div>
-                            <div class="fs-2 fw-bold {{ ($clienteSeleccionado['saldo'] ?? 0) > 0 ? 'text-danger' : 'text-success' }}">
-                                ${{ number_format($clienteSeleccionado['saldo'] ?? 0, 0, ',', '.') }}
+                            @php($saldoSel = $clienteSeleccionado ? $clienteSeleccionado->saldoCuentaCorriente() : 0)
+                            <div class="fs-2 fw-bold {{ $saldoSel > 0 ? 'text-danger' : 'text-success' }}">
+                                ${{ number_format($saldoSel, 0, ',', '.') }}
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card border-0 shadow-sm p-3">
-                    <h6 class="fw-bold text-secondary text-uppercase small mb-3"><i class="bi bi-clock-history me-1"></i> Movimientos</h6>
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-3"><i class="bi bi-clock-history me-1"></i> Movimientos y boletas</h6>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
@@ -114,18 +118,18 @@
                     <thead class="table-light">
                         <tr>
                             <th style="min-width: 220px;">Proveedor</th>
-                            <th>Contacto</th>
+                            <th>Concepto</th>
                             <th>Vencimiento</th>
                             <th class="text-end">Deuda</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($proveedores as $proveedor)
+                        @foreach ($deudasProveedores as $proveedor)
                             <tr>
-                                <td class="fw-semibold">{{ $proveedor['razon_social'] }}</td>
-                                <td class="small text-muted">{{ $proveedor['contacto'] }}</td>
+                                <td class="fw-semibold">{{ $proveedor['proveedor'] }}</td>
+                                <td class="small text-muted">{{ $proveedor['concepto'] }}</td>
                                 <td class="small">{{ $proveedor['vencimiento'] }}</td>
-                                <td class="text-end fw-bold text-danger">${{ number_format($proveedor['deuda'], 0, ',', '.') }}</td>
+                                <td class="text-end fw-bold text-danger">${{ number_format($proveedor['monto'], 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -135,22 +139,18 @@
     @endif
 
     <!-- Modal de cobro combinado -->
-    @if ($mostrarCobro && $tab === 'clientes')
-        <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+    @if ($mostrarCobro && $tab === 'clientes' && $clienteSeleccionado)
+        <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.6);" wire:key="cobro-{{ $clienteId }}">
             <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title fw-bold">
-                            <i class="bi bi-cash-coin me-2"></i> Cobro a {{ $clienteSeleccionado['nombre'] ?? 'Consumidor Final' }}
+                            <i class="bi bi-cash-coin me-2"></i> Cobro a {{ $clienteSeleccionado->nombre }}
                         </h5>
                         <button type="button" wire:click="cerrarCobro" class="btn-close btn-close-white" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body bg-light p-3">
-                        <livewire:cobros.formulario
-                            :cliente-id="$clienteId"
-                            :cliente-nombre="$clienteSeleccionado['nombre'] ?? 'Consumidor Final'"
-                            :boletas="$boletasPendientes"
-                        />
+                        <livewire:cobros.formulario :cliente-id="(int) $clienteId" :key="'form-cobro-'.$clienteId" />
                     </div>
                     <div class="modal-footer bg-light">
                         <button type="button" wire:click="cerrarCobro" class="btn btn-outline-secondary btn-touch">Cerrar</button>

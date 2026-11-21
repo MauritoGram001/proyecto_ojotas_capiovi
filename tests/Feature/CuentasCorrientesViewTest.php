@@ -42,7 +42,7 @@ class CuentasCorrientesViewTest extends TestCase
         Livewire::test(Index::class)
             ->call('abrirCobro')
             ->assertSet('mostrarCobro', true)
-            ->assertSee('Formulario de cobro (simulación)')
+            ->assertSee('Registrar cobro')
             ->assertSee('Desglose de medios de pago')
             ->assertSee('Imputar a boletas pendientes');
     }

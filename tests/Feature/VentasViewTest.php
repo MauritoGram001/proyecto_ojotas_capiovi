@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Livewire\Ventas\Crear;
+use App\Models\Boleta;
+use App\Models\CuentaCorriente;
 use App\Models\Producto;
 use App\Models\Variante;
 use App\Models\Venta;
@@ -81,8 +83,11 @@ class VentasViewTest extends TestCase
 
     public function test_advertencia_de_boleta_pendiente_no_bloquea_la_venta(): void
     {
+        // María González (id 1) tiene deuda pendiente real en cuenta corriente (seeder).
         Livewire::test(Crear::class)
             ->set('compradorId', '1')
+            ->assertSet('modoPrecio', 'minorista')
+            ->assertSee('deuda pendiente')
             ->assertSee('$18.500')
             ->assertSee('Podés continuar con la venta normalmente.')
             ->set('compradorId', 'final')
@@ -212,5 +217,31 @@ class VentasViewTest extends TestCase
         $response->assertOk();
         $this->assertStringContainsString('application/pdf', (string) $response->headers->get('content-type'));
         $this->assertStringContainsString($venta->numero, (string) $response->headers->get('content-disposition'));
+    }
+
+    public function test_venta_a_cliente_identificado_genera_boleta_pendiente_y_actualiza_saldo(): void
+    {
+        $clienteId = 1; // Mar�a Gonz�lez (deuda inicial 18500 por seeder)
+        $saldoAntes = (float) CuentaCorriente::query()->where('cliente_id', $clienteId)->value('saldo');
+
+        Livewire::test(Crear::class)
+            ->set('compradorId', (string) $clienteId)
+            ->set('productoSeleccionado', '101')
+            ->call('agregarLinea')
+            ->call('confirmarVenta')
+            ->assertHasNoErrors();
+
+        $venta = Venta::query()->latest('id')->first();
+        $this->assertNotNull($venta);
+        $this->assertSame($clienteId, $venta->cliente_id);
+
+        $boleta = Boleta::query()->where('venta_id', $venta->id)->first();
+        $this->assertNotNull($boleta);
+        $this->assertSame('Pendiente', $boleta->estado);
+        $this->assertEquals((float) $venta->total, (float) $boleta->monto);
+        $this->assertEquals((float) $venta->total, (float) $boleta->saldo);
+
+        $saldoDespues = (float) CuentaCorriente::query()->where('cliente_id', $clienteId)->value('saldo');
+        $this->assertEquals(round($saldoAntes + (float) $venta->total, 2), round($saldoDespues, 2));
     }
 }

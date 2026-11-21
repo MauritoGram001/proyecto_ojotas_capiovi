@@ -46,6 +46,11 @@ class Venta extends Model
         return $this->belongsTo(Cliente::class);
     }
 
+    public function boleta(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Boleta::class);
+    }
+
     public function usuario(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
